@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="#{text.pageChildTitle}"></title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/fonts/Rh-icon.gif">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/font-awesome.min.css}">
+<!-- 	button more and Chat -->
+<script type="text/javascript" th:src="@{/js/more.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/more.css}">
+<link rel="stylesheet" type="text/css" href="cssallpha/chatallpha.css">
+</head>
+<body class="app sidebar-mini rtl">
+
+	<!--  form child -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 th:text="#{text.newChild}" class="modal-title"
+						id="exampleModalLabel"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/addChild}" method="post"
+						th:object="${children}" enctype="multipart/form-data">
+						<div class="form-group">
+							<label th:text="#{text.donorFirstName}" for="recipient-name"
+								class="col-form-label"> </label> <input th:field="*{firstname}"
+								class="form-control" type="text" placeholder="child First Name"
+								required="required">
+						</div>
+						<div class="form-group">
+							<label th:text="#{text.donorLastName}" for="recipient-name"
+								class="col-form-label"> </label> <input th:field="*{lastname}"
+								class="form-control" type="text" placeholder="child Last Name"
+								required="required">
+						</div>
+						<div class="form-group">
+							<label th:text="#{text.bornOn}" for="recipient-name"
+								class="col-form-label"> </label> <input th:field="*{birthday}"
+								class="form-control" type="date" placeholder="Child birthday"
+								required="required">
+						</div>
+						<div class="form-group">
+							<label th:text="#{text.sex}" for="recipient-name"
+								class="col-form-label"></label> <select class="form-control"
+								th:field="*{sex}">
+								<option th:value="male">Male</option>
+								<option th:value="female">Female</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label th:text="#{text.status}" for="recipient-name"
+								class="col-form-label"></label> <select class="form-control"
+								th:field="*{sponsored}">
+								<option th:value="no">no sponsored</option>
+								<option th:value="yes">sponsored</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label th:text="#{text.childDescription}" for="message-text"
+								class="col-form-label"></label>
+							<textarea style="font-family: sans-serif; font-size: 12px;"
+								placeholder="describe child" th:field="*{description}"
+								class="form-control" required="required"></textarea>
+							<input type="number" th:value="${user.idaccount}"
+								name="idorphanage" hidden="">
+						</div>
+						<div class="form-group">
+							<h6 class="card-subtitle text-muted">
+								<input type="file" name="file" id="real-file" hidden=""
+									required="required" onchange="preview_image(event)" />
+								<button type="button" id="custom-button"
+									class="btn btn-cyan mr-1">
+									<span th:text="#{text.childImage}"></span> <span
+										id="custom-text"></span>
+								</button>
+								<img class="rounded"
+									style="width: 50px; height: 50px; border: none; text-decoration: none;"
+									id="output_image" />
+							</h6>
+						</div>
+
+						<div class="modal-footer">
+							<button th:text="#{text.register}" type="submit"
+								class="btn btn-primary ml-4"></button>
+							&nbsp; &nbsp; &nbsp;
+							<button th:text="#{text.cancel}" type="reset"
+								class="btn btn-danger mr-4"></button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--  /form child -->
+
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-capitalize" id="exampleModalLabel"
+						th:text="#{text.settings}"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="col-md-12 bg-primary text-light"
+						th:text="#{text.languageOption}"></div>
+					<a th:href="@{/englishOption}" style="border-color: gray;"
+						class="btn btn-light mt-2 ml-2 mb-1 btn-sm">English</a> <a
+						th:href="@{/frenchOption}" style="border-color: gray;"
+						class="btn btn-light mt-2 ml-2 mb-1 btn-sm">Français</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Navbar-->
+	<header class="app-header">
+		<a class="app-header__logo"><i class="fa fa rounded"> <img
+				src="/fonts/Rh-icon.gif" style="width: 40px; height: 30px;"></i>RiseHope</a>
+		<!-- Sidebar toggle button-->
+		<a class="app-sidebar__toggle mr-4" href="#" data-toggle="sidebar"
+			translate="" aria-label="Hide Sidebar"></a> <a
+			class="ml-4 mt-3 text-capitalize"
+			th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+			class="fa fa-user text-white"></i> <b class="text-white"
+			th:text="${user.cname}"></b> <b class="text-white"
+			th:if="${user.cname} == null"> <b class="text-white"
+				th:text="${user.plastname}"></b>
+		</b>
+		</a>
+		<!-- Navbar Right Menu-->
+		<ul class="app-nav">
+			<!-- Home menu -->
+			<li><a class="app-nav__item mr-4" th:href="@{/home}"
+				style="text-decoration: none;"> <i class="fa fa-home fa-1x"></i>
+					<span th:text="#{text.home}"></span>
+			</a></li>
+			<!-- 				search bar -->
+			<li class="app-search"><input class="app-search__input"
+				type="search" placeholder="Search">
+				<button class="app-search__button">
+					<i class="fa fa-search"></i>
+				</button></li>
+			<!--Notification Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#"
+				data-toggle="dropdown" aria-label="Show notifications"><i
+					class="fa fa-bell"></i></a>
+				<ul class="app-notification dropdown-menu dropdown-menu-right">
+					<li class="app-notification__title">You have 4 new
+						notifications.</li>
+					<div class="app-notification__content">
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-primary"></i><i
+										class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Lisa sent you a mail</p>
+									<p class="app-notification__meta">2 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-danger"></i><i
+										class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Mail server not
+										working</p>
+									<p class="app-notification__meta">5 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-success"></i><i
+										class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Transaction complete</p>
+									<p class="app-notification__meta">2 days ago</p>
+								</div></a></li>
+						<div class="app-notification__content">
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-primary"></i><i
+											class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Lisa sent you a mail</p>
+										<p class="app-notification__meta">2 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-danger"></i><i
+											class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Mail server not
+											working</p>
+										<p class="app-notification__meta">5 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-success"></i><i
+											class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Transaction complete</p>
+										<p class="app-notification__meta">2 days ago</p>
+									</div></a></li>
+						</div>
+					</div>
+					<li class="app-notification__footer"><a href="#">See all
+							notifications.</a></li>
+				</ul></li>
+			<!-- User Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#"
+				data-toggle="dropdown" aria-label="Open Profile Menu"><i
+					class="fa fa-chevron-circle-down"></i></a>
+				<ul class="dropdown-menu settings-menu dropdown-menu-right">
+					<li><a class="dropdown-item" th:href="@{#}"
+						data-toggle="modal" data-target="#settingsModal"
+						data-whatever="@getbootstrap"><i class="fa fa-cog"></i> <span
+							th:text="#{text.settings}"></span></a></li>
+					<li><a class="dropdown-item" th:href="@{/updateaccount}"><i
+							class="fa fa-user"></i> <span th:text="#{text.profile}"></span></a></li>
+					<li><a class="dropdown-item"
+						th:href="@{/authentification?logout}"><i
+							class="fa fa-power-off"></i> <span th:text="#{text.logout}"></span></a></li>
+				</ul></li>
+		</ul>
+	</header>
+	<!-- Sidebar menu-->
+	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	<aside class="app-sidebar">
+		<div class="app-sidebar__user">
+			<a th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+				th:if="${user.photo} == null"> <img
+					style="border: 4px solid #fff;" th:src="@{/fonts/manProfile.jpg}"
+					class="app-sidebar__user-avatar" width="40px" height="40px"
+					id="img" /></i> <i th:if="${user.photo} != null"> <img
+					style="border: 2px solid #fff;" class="app-sidebar__user-avatar"
+					width="40px" height="40px"
+					th:src="@{'/profileImages/'+${user.idaccount}}" />
+			</i>
+			</a>
+			<p class="app-sidebar__user-designation" th:text="${user.status}"></p>
+		</div>
+		<ul class="app-menu" style="font-family: sans-serif;">
+			<li th:if="${user.status} == ORPHANAGE" class="treeview"><a
+				class="app-menu__item" th:href="@{/addArticle}"> <i
+					class="app-menu__icon fa fa-edit"></i><span
+					th:text="#{text.postArticle}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/askforhelp}"> <i
+					class="app-menu__icon fa fa-hand-paper-o"></i> <span
+					th:text="#{text.askForHelp}" class="app-menu__label"></span></a></li>
+			<li class="treeview" hidden="" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" href="m	essage"> <i
+					class="app-menu__icon fa fa-money"></i> <span
+					th:text="#{text.payment}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/sponsor.html}"> <i
+					class="app-menu__icon fa fa-search"></i> <span
+					th:text="#{text.sponsor}" class="app-menu__label"></span></a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/adoptions}"> <i
+					class="app-menu__icon fa fa-odnoklassniki"></i> <span
+					th:text="#{text.suggestedAdoption}" class="app-menu__label"></span></a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/planning.html}"> <i
+					class="app-menu__icon fa fa-calendar"></i><span
+					th:text="#{text.createPlanning}" class="app-menu__label"></span>
+			</a></li>
+			<li th:if="${user.status} == ORPHANAGE" class="bg-dark"><a
+				class="app-menu__item" th:href="@{/childrenlist.html}"> <i
+					class="app-menu__icon fa fa-user-plus"></i> <span
+					th:text="#{text.addChildren}" class="app-menu__label"></span><i
+					class="fa fa-chevron-right"></i>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/necessity}"> <i
+					class="app-menu__icon fa fa-cart-plus"></i><span
+					th:text="#{text.mainNecessty}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == SPONSOR"><a
+				class="app-menu__item" th:href="@{/orphanageList}"> <i
+					class="app-menu__icon fa fa-home fa-1x"></i><span
+					th:text="#{text.locateOrphanage}" class="app-menu__label"></span></a></li>
+			<li th:if="${user.status} == SPONSOR"><a class="app-menu__item"
+				th:href="@{askedhelp}"> <i class="app-menu__icon fa fa-gift"></i>
+					<span th:text="#{text.askedHelp}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview"><a class="app-menu__item"
+				th:href="@{/suggestion}"><i
+					class="app-menu__icon fa fa-question"></i><span
+					th:text="#{text.suggestion}" class="app-menu__label"></span></a></li>
+		</ul>
+	</aside>
+
+	<main class="app-content">
+	<div class="app-title">
+		<h6 data-toggle="tooltip" data-placement="top" title="Add a New Child">
+			<a data-toggle="modal" data-target="#exampleModal"
+				data-whatever="@getbootstrap" type="button"> <span
+				class="fa-stack fa-lg"> <i
+					class="fa fa-circle fa-stack-2x text-primary"></i> <i
+					class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+			</span>
+			</a>
+		</h6>
+		<ul class="app-breadcrumb breadcrumb">
+			<li class="breadcrumb-item active"><i class="fa fa-home"></i></li>
+			<li th:text="#{text.children}" class="breadcrumb-item active"></li>
+		</ul>
+	</div>
+
+	<div class="row mb-2 tile-allpha" th:each="child: ${childrens}">
+		<div class="col-lg-3">
+			<div class="bs-component">
+				<span class="border-2 border-danger"> <i
+					th:if="${child.firstname} != null"> <img
+						class=" rounded border border-3 border-danger"
+						style="height: 200px; width: 200px; display: block;"
+						th:src="@{'/childrenprofile/'+${child.idchild}}"></i></span>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="bs-component">
+				<h5 th:text="#{text.detail}"></h5>
+				<p>
+					<b th:text="#{text.firstname}"></b> <i th:text="${child.firstname}"></i>
+				</p>
+				<p>
+					<b th:text="#{text.lastname}"></b> <i th:text="${child.lastname}"></i>
+				</p>
+				<p>
+					<b th:text="#{text.bornon}"></b> <i th:text="${child.birthday}"></i>
+				</p>
+				<p>
+					<b th:text="#{text.childsex}"></b> <i th:text="${child.sex}"></i>
+				</p>
+				<p>
+					<b th:text="#{text.sponsored}"></b> <i th:text="${child.sponsored}"></i>
+				</p>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="bs-component">
+				<h5 th:text="#{text.about}"></h5>
+				<table border="1" style="width: 400px;">
+					<tr>
+						<td>
+							<p class="text-muted tile-tile col-md-12 "
+								th:text="${child.description}"></p>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+		<div class="col-lg-1">
+			<div class="bs-component">
+				<h5>Option</h5>
+				<a
+					th:href="@{/updatechild/{childtoupdate} (childtoupdate=${child.idchild})}"
+					class="mb-1" style="text-decoration: none;" data-toggle="tooltip"
+					data-placement="top" title="edit"> <span class="fa-stack fa-lg">
+						<i class="fa fa-circle fa-stack-2x text-primary"></i> <i
+						class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+				</span>
+				</a> <a th:if="!${child.adopted}"
+					th:href="@{/adopted/{adoption} (adoption=${child.idchild})}"
+					class="mb-1" style="text-decoration: none;" data-toggle="tooltip"
+					data-placement="top" id="addAdoption" title="suggest in adoption">
+					<span class="fa-stack fa-lg"> <i
+						class="fa fa-circle fa-stack-2x text-primary"></i> <i
+						class="fa fa-child fa-stack-1x fa-inverse"></i>
+				</span>
+				</a> <a th:if="${child.adopted}"
+					th:href="@{/adopted/{adoption} (adoption=${child.idchild})}"
+					class="mb-1" style="text-decoration: none;" data-toggle="tooltip"
+					data-placement="top" id="moveAdoption"
+					title="remove from suggestion"> <span class="fa-stack fa-lg">
+						<i class="fa fa-circle fa-stack-2x text-warning"></i> <i
+						class="fa fa-street-view fa-stack-1x fa-inverse"></i>
+				</span>
+				</a> <a th:href="@{/warning/{child} (child=${child.idchild})}"
+					style="text-decoration: none;" data-toggle="tooltip"
+					data-placement="top" title="delete"> <span
+					class="fa-stack fa-lg"> <i
+						class="fa fa-circle fa-stack-2x text-danger"></i> <i
+						class="fa fa-trash fa-stack-1x fa-inverse"></i>
+				</span>
+				</a> <input type="text" id="idchild"
+					th:value="${#httpServletRequest.getParameter('value')}" hidden="">
+				<input type="button" id="warningbtn" data-toggle="modal"
+					data-target="#exampleModal1" value="123" hidden="">
+
+				<div class="modal fade" id="exampleModal1" tabindex="-1"
+					role="dialog" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title text-danger" id="exampleModalLabel">
+									<i class="fa fa-exclamation-triangle"></i> Warning
+								</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<b>You really want to delete: </b> <b
+									th:if="${childtodelete} != null"
+									th:text="${childtodelete.lastname}+' '+${childtodelete.firstname}"
+									class="text-capitalize text-success"></b> ?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary mr-2"
+									data-dismiss="modal">Cancel</button>
+								<a
+									th:href="@{/deletechile/{idchild} (idchild=${#httpServletRequest.getParameter('value')})}"
+									type="button" class="btn btn-danger">Delete</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</main>
+	<!-- Essential javascripts for application to work-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+
+	<!-- The javascript plugin to display page loading on top-->
+	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+	<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
+	<script type="text/javascript">
+		$('#addAdoption').click(function() {
+			$.notify({
+				title : "Adoption : ",
+				message : "This child has been suggest in adoption!",
+				icon : 'fa fa-check'
+			}, {
+				type : "info"
+			});
+		});
+
+		$('#moveAdoption').click(function() {
+			$.notify({
+				title : "Adoption : ",
+				message : "This child has been remove to adoption!",
+				icon : 'fa fa-trash'
+			}, {
+				type : "danger"
+			});
+		});
+	</script>
+
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+	<!-- Page specific javascripts-->
+	<!-- Google analytics script-->
+	<script type="text/javascript">
+		if (document.location.hostname == 'pratikborsadiya.in') {
+			(function(i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function() {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script',
+					'//www.google-analytics.com/analytics.js', 'ga');
+			ga('create', 'UA-72504830-1', 'auto');
+			ga('send', 'pageview');
+		}
+	</script>
+	<!-- 	test URL value -->
+	<script>
+		const btnWarning = document.getElementById("warningbtn");
+
+		$(function() {
+			var idChild = $("#idchild").val();
+			if (idChild != '') {
+				btnWarning.click();
+			} else {
+			}
+		});
+	</script>
+	<!-- script of button upload picture -->
+	<script>
+		const realFileBtn = document.getElementById("real-file");
+		const customBtn = document.getElementById("custom-button");
+		const customTxt = document.getElementById("custom-text");
+
+		customBtn.addEventListener("click", function() {
+			realFileBtn.click();
+
+		});
+
+		realFileBtn
+				.addEventListener(
+						"change",
+						function() {
+							if (realFileBtn.value) {
+								customTxt.innerHTML = realFileBtn.innerHTML = "<b class='fa fa-chevron-right'><b>";
+							} else {
+								customTxt.innerHTML = "<b style='font-size: 12px;'>No File Choosen, yet... <i style='font-size: 18px;' class='fa fa-times-circle text-danger ml-4'></i> <b>";
+							}
+						});
+	</script>
+	<!-- 	 script for preview image -->
+	<script type='text/javascript'>
+		function preview_image(event) {
+			var reader = new FileReader();
+			reader.onload = function() {
+				var output = document.getElementById('output_image');
+				output.src = reader.result;
+			}
+			reader.readAsDataURL(event.target.files[0]);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>RiseHope Login</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/fonts/Rh-icon.gif">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/font-awesome.min.css}">
+</head>
+<body
+	style="background-image: url('/fonts/authentification.jpg'); width: 100%; height: 100%;">
+
+	<header>
+		<nav
+			class="navbar navbar-expand-md navbar-dark bg-white fixed-top bd-navbar">
+			<!--logo
+<h1 class="text-hide" >Genie6</h1> -->
+			<a class="app-header__logo">RiseHope</a> <b class="ml-4"
+				style="font-style: italic; font-size: 19px;"> Sauvons un enfant
+				Sauvons l'hummanité</b> <i class="fa fa-child text-primary"
+				style="font-size: 40px;"></i> <b class="ml-4"
+				style="font-style: italic; font-size: 19px;"> Together Build a
+				better World</b> <i class="fa fa-users text-primary ml-3 mr-4"
+				style="font-size: 40px;"></i>
+		</nav>
+	</header>
+
+	<section class="login-content">
+		<div class="login-box">
+			<div th:if="${param.logout}" class="form-group">
+				<div class="col-lg-12">
+					<div class="bs-component">
+						<div style="width: 100%; font-weight: bold; font-size: 13px;"
+							class="alert alert-dismissible alert-success">
+							<button style="font-size: 160%;" class="close" type="button"
+								data-dismiss="alert">×</button>
+							<span th:text="#{text.alertLogOut}"></span> <i class="fa fa-lg fa-fw fa-success"> </i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:if="${param.error}" class="form-group">
+				<div class="col-lg-12">
+					<div class="bs-component">
+						<div style="width: 100%; font-weight: bold; font-size: 13px;"
+							class="alert alert-dismissible alert-danger">
+							<button style="font-size: 160%;" class="close" type="button"
+								data-dismiss="alert">×</button>
+							<span th:text="#{text.passwordError}"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<form class="login-form mt-3" th:action="@{/authentification}"
+				method="post">
+				<h5 class="login-head">
+					<i class="fa fa-lg fa-fw fa-user"> </i>AUTHENTIFICATION
+				</h5>
+				<div class="form-group">
+					<label class="control-label text-uppercase"
+						th:text="#{text.phoneauthentification}"></label> <input
+						class="form-control" type="text" name="username"
+						placeholder="Enter Your Phone number here" autofocus>
+				</div>
+				<div class="form-group">
+					<label class="control-label text-uppercase"
+						th:text="#{text.password}"></label> <input class="form-control"
+						type="password" name="password" placeholder="Password">
+				</div>
+				<div class="form-group btn-container mb-4">
+					<button class="btn btn-primary btn-block" type="submit">
+						<i class="fa fa-sign-in fa-lg fa-fw"></i> <span class="text-uppercase" th:text="#{text.signIn}"></span>
+					</button>
+				</div>
+				<div class="form-group btn-container mb-4">
+					<a th:href="@{/inscription}"> <span class="text-capitalize" th:text="#{text.newAccount}"></span><i
+						class="fa fa-chevron-right"></i>
+					</a>
+				</div>
+
+			</form>
+		</div>
+	</section>
+
+	<!-- Essential javascripts for application to work-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+	<script type="text/javascript">
+		// Login Page Flipbox control
+		$('.login-content [data-toggle="flip"]').click(function() {
+			$('.login-box').toggleClass('flipped');
+			return false;
+		});
+	</script>
+</body>
+</html>

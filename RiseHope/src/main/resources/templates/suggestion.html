@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Suggestions</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/fonts/Rh-icon.gif">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/font-awesome.min.css}">
+<!-- 	button more and Chat -->
+<script type="text/javascript" th:src="@{/js/more.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/more.css}">
+<link rel="stylesheet" type="text/css" href="cssallpha/chatallpha.css">
+</head>
+<body class="app sidebar-mini rtl">
+
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-capitalize" id="exampleModalLabel"
+						th:text="#{text.settings}"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="col-md-12 bg-primary text-light"
+						th:text="#{text.languageOption}"></div>
+					<a th:href="@{/englishOption}" style="border-color: gray;"
+						class="btn btn-light mt-2 ml-2 mb-1 btn-sm">English</a> <a
+						th:href="@{/frenchOption}" style="border-color: gray;"
+						class="btn btn-light mt-2 ml-2 mb-1 btn-sm">Français</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Navbar-->
+	<header class="app-header">
+		<a class="app-header__logo"><i class="fa fa rounded"> <img
+				src="/fonts/Rh-icon.gif" style="width: 40px; height: 30px;"></i>RiseHope</a>
+		<!-- Sidebar toggle button-->
+		<a class="app-sidebar__toggle mr-4" href="#" data-toggle="sidebar"
+			translate="" aria-label="Hide Sidebar"></a> <a
+			class="ml-4 mt-3 text-capitalize"
+			th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+			class="fa fa-user text-white"></i> <b class="text-white"
+			th:text="${user.cname}"></b> <b class="text-white"
+			th:if="${user.cname} == null"> <b class="text-white"
+				th:text="${user.plastname}"></b>
+		</b>
+		</a>
+		<!-- Navbar Right Menu-->
+		<ul class="app-nav">
+			<!-- Home menu -->
+			<li><a class="app-nav__item mr-4" th:href="@{/home}"
+				style="text-decoration: none;"> <i class="fa fa-home fa-1x"></i>
+					<span th:text="#{text.home}"></span>
+			</a></li>
+			<!-- 				search bar -->
+			<li class="app-search"><input class="app-search__input"
+				type="search" placeholder="Search">
+				<button class="app-search__button">
+					<i class="fa fa-search"></i>
+				</button></li>
+			<!--Notification Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#"
+				data-toggle="dropdown" aria-label="Show notifications"><i
+					class="fa fa-bell"></i></a>
+				<ul class="app-notification dropdown-menu dropdown-menu-right">
+					<li class="app-notification__title">You have 4 new
+						notifications.</li>
+					<div class="app-notification__content">
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-primary"></i><i
+										class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Lisa sent you a mail</p>
+									<p class="app-notification__meta">2 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-danger"></i><i
+										class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Mail server not
+										working</p>
+									<p class="app-notification__meta">5 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-success"></i><i
+										class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Transaction complete</p>
+									<p class="app-notification__meta">2 days ago</p>
+								</div></a></li>
+						<div class="app-notification__content">
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-primary"></i><i
+											class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Lisa sent you a mail</p>
+										<p class="app-notification__meta">2 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-danger"></i><i
+											class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Mail server not
+											working</p>
+										<p class="app-notification__meta">5 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-success"></i><i
+											class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Transaction complete</p>
+										<p class="app-notification__meta">2 days ago</p>
+									</div></a></li>
+						</div>
+					</div>
+					<li class="app-notification__footer"><a href="#">See all
+							notifications.</a></li>
+				</ul></li>
+			<!-- User Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#"
+				data-toggle="dropdown" aria-label="Open Profile Menu"><i
+					class="fa fa-chevron-circle-down"></i></a>
+				<ul class="dropdown-menu settings-menu dropdown-menu-right">
+					<li><a class="dropdown-item" th:href="@{#}"
+						data-toggle="modal" data-target="#settingsModal"
+						data-whatever="@getbootstrap"><i class="fa fa-cog"></i> <span
+							th:text="#{text.settings}"></span></a></li>
+					<li><a class="dropdown-item" th:href="@{/updateaccount}"><i
+							class="fa fa-user"></i> <span th:text="#{text.profile}"></span></a></li>
+					<li><a class="dropdown-item"
+						th:href="@{/authentification?logout}"><i
+							class="fa fa-power-off"></i> <span th:text="#{text.logout}"></span></a></li>
+				</ul></li>
+		</ul>
+	</header>
+	<!-- Sidebar menu-->
+	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	<aside class="app-sidebar">
+		<div class="app-sidebar__user">
+			<a th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+				th:if="${user.photo} == null"> <img
+					style="border: 4px solid #fff;" th:src="@{/fonts/manProfile.jpg}"
+					class="app-sidebar__user-avatar" width="40px" height="40px"
+					id="img" /></i> <i th:if="${user.photo} != null"> <img
+					style="border: 2px solid #fff;" class="app-sidebar__user-avatar"
+					width="40px" height="40px"
+					th:src="@{'/profileImages/'+${user.idaccount}}" />
+			</i>
+			</a>
+			<p class="app-sidebar__user-designation" th:text="${user.status}"></p>
+		</div>
+		<ul class="app-menu" style="font-family: sans-serif;">
+			<li th:if="${user.status} == ORPHANAGE" class="treeview"><a
+				class="app-menu__item" th:href="@{/addArticle}"> <i
+					class="app-menu__icon fa fa-edit"></i><span
+					th:text="#{text.postArticle}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/askforhelp}"> <i
+					class="app-menu__icon fa fa-hand-paper-o"></i> <span
+					th:text="#{text.askForHelp}" class="app-menu__label"></span></a></li>
+			<li class="treeview" hidden="" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" href="m	essage"> <i
+					class="app-menu__icon fa fa-money"></i> <span
+					th:text="#{text.payment}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/sponsor.html}"> <i
+					class="app-menu__icon fa fa-search"></i> <span
+					th:text="#{text.sponsor}" class="app-menu__label"></span></a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/adoptions}"> <i
+					class="app-menu__icon fa fa-odnoklassniki"></i> <span
+					th:text="#{text.suggestedAdoption}" class="app-menu__label"></span></a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/planning.html}"> <i
+					class="app-menu__icon fa fa-calendar"></i><span
+					th:text="#{text.createPlanning}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE" ><a
+				class="app-menu__item" th:href="@{/childrenlist.html}"> <i
+					class="app-menu__icon fa fa-user-plus"></i> <span
+					th:text="#{text.addChildren}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/necessity}"> <i
+					class="app-menu__icon fa fa-cart-plus"></i><span
+					th:text="#{text.mainNecessty}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == SPONSOR"><a
+				class="app-menu__item" th:href="@{/orphanageList}"> <i
+					class="app-menu__icon fa fa-home fa-1x"></i><span
+					th:text="#{text.locateOrphanage}" class="app-menu__label"></span></a></li>
+			<li th:if="${user.status} == SPONSOR"><a class="app-menu__item"
+				th:href="@{askedhelp}"> <i class="app-menu__icon fa fa-gift"></i>
+					<span th:text="#{text.askedHelp}" class="app-menu__label"></span>
+			</a></li>
+			<li  class="bg-dark"><a class="app-menu__item"
+				th:href="@{/suggestion}"><i
+					class="app-menu__icon fa fa-question"></i><span
+					th:text="#{text.suggestion}" class="app-menu__label"></span> <i
+					class="fa fa-chevron-right"></i></a></li>
+		</ul>
+	</aside>
+
+	<main class="app-content">
+	<div class="row">
+		<div class="tile col-md-12" id="center">
+			<h4>
+				<i class="fa fa-edit" th:text="#{text.editsuggestions}"></i>
+			</h4>
+			<form method="post" th:action="@{/suggestion}"
+				th:object="${suggestion}">
+				<div class="row">
+					<div class="tile col-md-12">
+						<div class="form-group">
+							<label for="exampleTextarea" th:text="#{text.suggestions}"></label>
+							<textarea th:field="*{content}" class="form-control"
+								id="exampleTextarea" placeholder="Enter the text here" rows="4"
+								required="required"></textarea>
+							<input type="number" name="idowner" th:value="${user.idaccount}"
+								hidden="">
+						</div>
+						<div class="text-right">
+							<div class="btn-group">
+								<button class="btn btn-primary mr-4" type="submit">
+									<i class="fa fa-fw fa-lg fa-send-o"></i> <b
+										th:text="#{text.submit}"></b>
+								</button>
+								<button class="btn btn-danger" type="reset">
+									<i class="fa fa-fw fa-lg fa-times-circle"></i> <b
+										th:text="#{text.cancel}"></b>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="tile-space-allpha">
+				<div class="table-responsive mailbox-messages">
+					<table class="table table-hover table-striped">
+						<tbody>
+							<tr th:each="sgt: ${suggestions}">
+								<td><i th:if="${user.photo} == null"> <img
+										th:src="@{/fonts/manProfile.jpg}"
+										class="app-sidebar__user-avatar" width="40px" height="40px"
+										id="img" /></i> <i th:if="${user.photo} != null"> <img
+										class="app-sidebar__user-avatar" width="40px" height="40px"
+										th:src="@{'/profileImages/'+${user.idaccount}}" />
+								</i></td>
+								<td style="padding-top: 15px;"><i
+									class="fa fa-chevron-right"></i>&nbsp; <b
+									th:text="${sgt.content}"></b></td>
+								<td style="padding-top: 15px;" th:text="${sgt.date}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<!-- Essential javascripts for application to work-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+	<!-- 	chat javascript -->
+	<script type="text/javascript"
+		th:src="@{/jsallpha/chatallpha-1.0.1.js}"></script>
+	<script type="text/javascript" th:src="@{/jsallpha/jquery-1.10.2.js}"></script>
+	<!-- Page specific javascripts-->
+	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+	<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
+	<script type="text/javascript" src="js/plugins/chart.js"></script>
+	<script type="text/javascript">
+		var data = {
+			labels : [ "January", "February", "March", "April", "May" ],
+			datasets : [ {
+				label : "My First dataset",
+				fillColor : "rgba(220,220,220,0.2)",
+				strokeColor : "rgba(220,220,220,1)",
+				pointColor : "rgba(220,220,220,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(220,220,220,1)",
+				data : [ 65, 59, 80, 81, 56 ]
+			}, {
+				label : "My Second dataset",
+				fillColor : "rgba(151,187,205,0.2)",
+				strokeColor : "rgba(151,187,205,1)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",
+				data : [ 28, 48, 40, 19, 86 ]
+			} ]
+		};
+		var pdata = [ {
+			value : 300,
+			color : "#46BFBD",
+			highlight : "#5AD3D1",
+			label : "Complete"
+		}, {
+			value : 50,
+			color : "#F7464A",
+			highlight : "#FF5A5E",
+			label : "In-Progress"
+		} ]
+
+		var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+		var lineChart = new Chart(ctxl).Line(data);
+
+		var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+		var pieChart = new Chart(ctxp).Pie(pdata);
+	</script>
+	<!-- 	button more javascript -->
+	<script>
+		jQuery(document).ready(function() {
+			$(".more").hide();
+			jQuery('.button-read-more').click(function() {
+				$(this).closest('.less').addClass('active');
+				$(this).closest(".less").prev().stop(true).slideDown("1000");
+			});
+			jQuery('.button-read-less').click(function() {
+				$(this).closest('.less').removeClass('active');
+				$(this).closest(".less").prev().stop(true).slideUp("1000");
+			});
+		});
+	</script>
+
+	<!-- Google analytics script-->
+	<script type="text/javascript">
+		if (document.location.hostname == 'pratikborsadiya.in') {
+			(function(i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function() {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script',
+					'//www.google-analytics.com/analytics.js', 'ga');
+			ga('create', 'UA-72504830-1', 'auto');
+			ga('send', 'pageview');
+		}
+	</script>
+	<!-- script of button upload status -->
+	<script>
+		const realFileBtn = document.getElementById("real-file");
+		const customBtn = document.getElementById("custom-button");
+		const customTxt = document.getElementById("custom-text");
+
+		customBtn.addEventListener("click", function() {
+			realFileBtn.click();
+
+		});
+
+		realFileBtn
+				.addEventListener(
+						"change",
+						function() {
+							if (realFileBtn.value) {
+								customTxt.innerHTML = realFileBtn.innerHTML = " <b style='font-size: 12px;'>Image is Load... <i style='font-size: 18px;' class='fa fa-check text-success ml-4'></i> <b>";
+							} else {
+								customTxt.innerHTML = "<b style='font-size: 12px;'>No File Choosen, yet... <i style='font-size: 18px;' class='fa fa-times-circle text-danger ml-4'></i> <b>";
+							}
+						});
+	</script>
+	<script>
+		jQuery(document).ready(function() {
+			const defaultImg = document.getElementById("img");
+			const tester = document.getElementById("test").value;
+			alert(tester + "it walk");
+			// 			if (tester != "null") {
+			// 				$("#img").hide();
+			// 			}
+		});
+	</script>
+	<script>
+		$('#demoSwal').click(function() {
+			swal({
+				title : "Are you sure?",
+				text : "You will not be able to recover this status!",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonText : "Yes, delete it!",
+				cancelButtonText : "No, cancel!",
+				closeOnConfirm : false,
+				closeOnCancel : false
+			}, function(isConfirm) {
+				if (isConfirm) {
+					swal("Deleted!", "Status deleted.", "success");
+				} else {
+					swal("Cancelled", "Status is safe :)", "error");
+				}
+			});
+		});
+	</script>
+	<!-- 	scroll page stop -->
+
+
+</body>
+</html>

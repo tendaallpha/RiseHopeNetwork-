@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="first" author="allpha">
+		<!-- table of articles -->
+		<createTable tableName="article">
+			<column name="idarticle" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="title" type="varchar(100)" />
+			<column name="content" type="varchar(20000)" />
+			<column name="color" type="varchar(10)" />
+			<column name="date" type="varchar(20)" />
+			<column name="ownerarticle" type="Integer" />
+		</createTable>
+
+		<!-- table of comments -->
+		<createTable tableName="comment">
+			<column name="idcomment" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="text" type="varchar(5000)" />
+			<column name="propritaire" type="Integer" />
+			<column name="userowner" type="Integer" />
+			<column name="statusowner" type="Integer"></column>
+		</createTable>
+
+		<!-- table of planning -->
+		<createTable tableName="planning">
+			<column name="idplanning" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="timeb" type="varchar(10)" />
+			<column name="timee" type="varchar(10)" />
+			<column name="day" type="varchar(15)" />
+			<column name="activity" type="varchar(300)" />
+			<column name="ownerplanning" type="Integer" />
+		</createTable>
+
+		<!-- table of Necessity -->
+		<createTable tableName="necessity">
+			<column name="idnecessity" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="necessitytitle" type="varchar(100)" />
+			<column name="description" type="varchar(2000)" />
+			<column name="dates" type="date" />
+			<column name="ownernecessity" type="Integer" />
+		</createTable>
+
+		<!-- table of account -->
+		<createTable tableName="account">
+			<column name="idaccount" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="cname" type="varchar(20)" />
+			<column name="ccity" type="varchar(20)" />
+			<column name="ccountry" type="varchar(20)" />
+			<column name="cpassword" type="varchar(1000)" />
+			<column name="ccreatingdate" type="varchar(20)" />
+			<column name="cphone" type="Integer" />
+			<column name="cvalidation" type="varchar(20)" />
+			<column name="pnationality" type="varchar(20)" />
+			<column name="pfirstname" type="varchar(20)" />
+			<column name="pphone" type="Integer" />
+			<column name="psex" type="varchar(6)" />
+			<column name="plastname" type="varchar(20)" />
+			<column name="pcni" type="Integer" />
+			<column name="status" type="varchar(10)" />
+			<column name="story" type="varchar(5000)" />
+			<column name="photo" type="varchar(5)" />
+			<column name="know" type="Integer" />
+			<column name="orgrole" type="varchar(8)" />
+			<column name="orgstatut" type="boolean" />
+			<column name="organizationmember" type="Integer" />
+		</createTable>
+
+		<!-- table of mail -->
+		<createTable tableName="mail">
+			<column name="idmail" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="date" type="varchar(20)" />
+			<column name="content" type="varchar(20000)" />
+			<column name="sendermails" type="Integer" />
+			<column name="receivermails" type="Integer" />
+		</createTable>
+
+		<!-- Table of AskHelp -->
+		<createTable tableName="askhelp">
+			<column name="idaskhelp" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="date" type="varchar(20)" />
+			<column name="content" type="varchar(20000)" />
+			<column name="accept" type="varchar(8)" />
+			<column name="refuse" type="varchar(8)" />
+			<column name="delete" type="boolean" />
+			<column name="owneraskhelp" type="Integer" />
+		</createTable>
+
+		<!-- table of children -->
+		<createTable tableName="child">
+			<column name="idchild" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="firstname" type="varchar(20)" />
+			<column name="lastname" type="varchar(20)" />
+			<column name="birthday" type="varchar(20)" />
+			<column name="sex" type="varchar(20)" />
+			<column name="sponsored" type="varchar(15)" />
+			<column name="adopted" type="boolean" />
+			<column name="description" type="varchar(2000)" />
+			<column name="ownerchildren" type="Integer" />
+		</createTable>
+
+		<!-- table of status -->
+		<createTable tableName="status">
+			<column name="idstatus" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="stscontent" type="varchar(1000)" />
+			<column name="date" type="varchar(20)" />
+			<column name="love" type="Integer" />
+			<column name="view" type="Integer" />
+			<column name="ownerstatus" type="Integer" />
+		</createTable>
+
+		<!-- table of suggestion -->
+		<createTable tableName="suggestion">
+			<column name="idsuggestion" type="Integer"
+				autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="content" type="varchar(1000)" />
+			<column name="date" type="varchar(20)" />
+			<column name="suggestionowner" type="Integer" />
+		</createTable>
+
+		<!-- table of activity -->
+		<createTable tableName="activity">
+			<column name="idactivity" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="title" type="varchar(150)" />
+			<column name="goal" type="varchar(2000)" />
+			<column name="financingrole" type="varchar(2000)" />
+			<column name="dates" type="varchar(20)" />
+			<column name="owneractivity" type="Integer" />
+		</createTable>
+
+		<!-- table of visit -->
+		<createTable tableName="visit">
+			<column name="idvisit" type="Integer" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="dates" type="varchar(20)" />
+			<column name="centervisited" type="Integer" />
+		</createTable>
+
+		<!-- table of opportunity -->
+		<createTable tableName="opportunity">
+			<column name="idopportunity" type="Integer"
+				autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="link" type="varchar(3000)" />
+			<column name="description" type="varchar(500)" />
+			<column name="owneropportunity" type="Integer" />
+		</createTable>
+
+		<!-- table of organization -->
+		<createTable tableName="organization">
+			<column name="idorganization" type="Integer"
+				autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="name" type="varchar(20)" />
+			<column name="birthday" type="varchar(20)" />
+			<column name="headoffice" type="varchar(20)" />
+			<column name="country" type="varchar(20)" />
+			<column name="district" type="varchar(20)" />
+			<column name="purpose" type="varchar(5000)" />
+			<column name="organizationowner" type="Integer" />
+		</createTable>
+
+		<!-- table of askHelpTrasactions -->
+		<createTable tableName="askhelptransaction">
+			<column name="idaskhelp" type="Integer" />
+			<column name="iduser" type="Integer" />
+		</createTable>
+
+		<!-- table of publicationlike -->
+		<createTable tableName="publicationlike">
+			<column name="idpublication" type="Integer" />
+			<column name="iduser" type="Integer" />
+		</createTable>
+
+		<!-- table of activitylike -->
+		<createTable tableName="activitylike">
+			<column name="activityid" type="Integer" />
+			<column name="iduser" type="Integer" />
+		</createTable>
+
+		<!-- table of activityview -->
+		<createTable tableName="activityview">
+			<column name="activityid" type="Integer" />
+			<column name="iduser" type="Integer" />
+		</createTable>
+
+		<!-- table of organizationmember -->
+		<createTable tableName="member">
+			<column name="account" type="Integer" />
+			<column name="organization" type="Integer" />
+		</createTable>
+
+
+		<addForeignKeyConstraint
+			constraintName="comment_article" referencedTableName="article"
+			referencedColumnNames="idarticle" baseTableName="comment"
+			baseColumnNames="propritaire" />
+
+		<addForeignKeyConstraint
+			constraintName="comment_status" referencedTableName="status"
+			referencedColumnNames="idstatus" baseTableName="comment"
+			baseColumnNames="statusowner" />
+
+		<addForeignKeyConstraint
+			constraintName="article_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="article"
+			baseColumnNames="ownerarticle" />
+
+		<addForeignKeyConstraint
+			constraintName="sendermail_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="mail"
+			baseColumnNames="sendermails" />
+
+		<addForeignKeyConstraint
+			constraintName="necessity_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="necessity"
+			baseColumnNames="ownernecessity" />
+
+		<addForeignKeyConstraint
+			constraintName="planning_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="planning"
+			baseColumnNames="ownerplanning" />
+
+		<addForeignKeyConstraint
+			constraintName="children_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="child"
+			baseColumnNames="ownerchildren" />
+
+		<addForeignKeyConstraint
+			constraintName="comment_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="comment"
+			baseColumnNames="userowner" />
+
+		<addForeignKeyConstraint
+			constraintName="receivermail_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="mail"
+			baseColumnNames="receivermails" />
+
+		<addForeignKeyConstraint
+			constraintName="status_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="status"
+			baseColumnNames="ownerstatus" />
+
+		<addForeignKeyConstraint
+			constraintName="suggestion_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="suggestion"
+			baseColumnNames="suggestionowner" />
+
+		<addForeignKeyConstraint
+			constraintName="activity_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="activity"
+			baseColumnNames="owneractivity" />
+
+		<addForeignKeyConstraint
+			constraintName="opportunity_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="opportunity"
+			baseColumnNames="owneropportunity" />
+		
+		<addForeignKeyConstraint
+			constraintName="askhelp_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="askhelp"
+			baseColumnNames="owneraskhelp" />
+		
+		<addForeignKeyConstraint
+			constraintName="visit_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="visit"
+			baseColumnNames="centervisited" />
+
+		<addForeignKeyConstraint
+			constraintName="account_organization"
+			referencedTableName="organization"
+			referencedColumnNames="idorganization" baseTableName="account"
+			baseColumnNames="organizationmember" />
+
+		<addForeignKeyConstraint
+			constraintName="organization_account" referencedTableName="account"
+			referencedColumnNames="idaccount" baseTableName="organization"
+			baseColumnNames="organizationowner" /> 
+
+
+		<!-- <sqlFile path="echoSos1.sql" relativeToChangelogFile="true" /> -->
+	</changeSet>
+</databaseChangeLog>

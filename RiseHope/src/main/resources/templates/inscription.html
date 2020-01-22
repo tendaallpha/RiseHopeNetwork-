@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Choose Account</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/fonts/Rh-icon.gif">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/font-awesome.min.css}">
+</head>
+<body>
+	<section class="material-half-bg">
+		<div class="cover"></div>
+	</section>
+	<section class="lockscreen-content">
+		<div class="logo">
+			<h1 th:text="#{text.accountChoice}"></h1>
+		</div>
+		<div class="lock-box">
+			<h4 class="text-center user-name">
+				<i style="font-size: 20px;" class="fa fa-home text-black"></i> <span
+					th:text="#{text.or}"></span> <i style="font-size: 20px;"
+					class="fa fa-user text-black"></i>
+			</h4>
+			<form class="unlock-form" action="index.html">
+				<div class="form-group btn-container">
+					<a class="btn btn-primary btn-lg btn-block"
+						th:href="@{/orphanInscription}" th:text="#{text.orphanageAccount}"></a>
+				</div>
+				<div class="form-group btn-container">
+					<a class="btn btn-primary btn-lg btn-block"
+						th:href="@{sponsoring.html}" th:text="#{text.donorAccount}"></a>
+				</div>
+			</form>
+			<p>
+				<a th:href="@{/authentification}" th:text="#{text.backToLogPage}">
+				</a>
+			</p>
+		</div>
+	</section>
+	<!-- Essential javascripts for application to work-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+</body>
+</html>

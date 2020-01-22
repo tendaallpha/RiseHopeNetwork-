@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<title>RiseHope</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/fonts/Rh-icon.gif">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/font-awesome.min.css}">
+<!-- 	button more and Chat -->
+<script type="text/javascript" th:src="@{/js/more.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/more.css}">
+<link rel="stylesheet" type="text/css" href="cssallpha/chatallpha.css">
+</head>
+<body class="app sidebar-mini rtl">
+
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-capitalize" id="exampleModalLabel"
+						th:text="#{text.settings}"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="col-md-12 bg-primary text-light"
+						th:text="#{text.languageOption}"></div>
+					<a th:href="@{/englishOption}" style="border-color: gray;"
+						class="btn btn-light mt-2 ml-2 mb-1 btn-sm">English</a> <a
+						th:href="@{/frenchOption}" style="border-color: gray;"
+						class="btn btn-light mt-2 ml-2 mb-1 btn-sm">Français</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--  form activity -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 th:text="#{text.formActivityTitle}"
+						class="modal-title text-capitalize" id="exampleModalLabel"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="post" th:action="@{/addActivity}"
+						th:object="${initialActivity}" enctype="multipart/form-data">
+						<div class="form-group">
+							<label th:text="#{text.activityName}" for="recipient-name"
+								class="col-form-label"></label> <input type="text"
+								class="form-control" id="recipient-name"
+								placeholder="Project Name" th:field="*{title}">
+						</div>
+						<div class="form-group">
+							<label th:text="#{text.activityRole}" for="message-text"
+								class="col-form-label"></label>
+							<textarea th:field="*{goal}"
+								style="font-family: sans-serif; font-size: 12px;"
+								placeholder="Write the project role" class="form-control"
+								required="required"></textarea>
+							<input type="number" th:value="${user.idaccount}" name="owner"
+								hidden="">
+						</div>
+						<div class="form-group">
+							<label th:text="#{text.activityFinancyRole}" for="message-text"
+								class="col-form-label"> </label>
+							<textarea th:field="*{financingrole}"
+								style="font-family: sans-serif; font-size: 12px;"
+								placeholder="What about financing" class="form-control"
+								required="required"></textarea>
+
+						</div>
+						<div class="form-group">
+							<h6 class="card-subtitle text-muted">
+								<input type="file" id="real-file0" hidden="" name="file"
+									onchange="preview_image(event)" required="required" />
+								<button type="button" id="custom-button0"
+									class="btn btn-cyan mr-1 mb-1 btn-sm">
+									<span th:text="#{text.buttonActivityImg}"></span> <span
+										id="custom-text0"></span>
+								</button>
+							</h6>
+							<img class="rounded"
+								style="width: 100%; border: none; text-decoration: none;"
+								id="output_image" />
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary ml-4"
+								th:text="#{text.buttonCreateActivity}"></button>
+							&nbsp; &nbsp; &nbsp;
+							<button type="reset" class="btn btn-danger mr-4"
+								th:text="#{text.cancel}"></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--  /form Activity-->
+
+	<!--  form Opportunity -->
+	<div class="modal fade" id="opportunityModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-capitalize" id="exampleModalLabel">LAUNCH
+						AN OPPORTUNITY</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="post" th:action="@{/addopportunity}"
+						th:object="${initialActivity}" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">Web
+								site <i class="text-danger">(no obligate)</i>:
+							</label> <input type="text" class="form-control" id="recipient-name"
+								placeholder="link of the web site" name="link">
+						</div>
+
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">
+								Description:</label>
+							<textarea name="description"
+								style="font-family: sans-serif; font-size: 12px;"
+								placeholder="What about this opportunity" class="form-control"
+								required="required"></textarea>
+						</div>
+
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary ml-4">Create</button>
+							&nbsp; &nbsp; &nbsp;
+							<button type="reset" class="btn btn-danger mr-4">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--  /form Opportunity-->
+	<!-- Navbar-->
+	<header class="app-header">
+		<a class="app-header__logo"><i class="fa fa rounded"> <img
+				src="/fonts/Rh-icon.gif" style="width: 40px; height: 30px;"></i>RiseHope</a>
+		<!-- Sidebar toggle button-->
+		<a class="app-sidebar__toggle mr-4" href="#" data-toggle="sidebar"
+			translate="" aria-label="Hide Sidebar"></a> <a
+			class="ml-4 mt-3 text-capitalize"
+			th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+			class="fa fa-user text-white"></i> <b class="text-white"
+			th:text="${user.cname}"></b> <b class="text-white"
+			th:if="${user.cname} == null"> <b class="text-white"
+				th:text="${user.plastname}"></b>
+		</b>
+		</a>
+		<!-- Navbar Right Menu-->
+		<ul class="app-nav">
+			<!-- Home menu -->
+			<li><a class="app-nav__item mr-4" th:href="@{/home}"
+				style="text-decoration: none;"> <i class="fa fa-home fa-1x"></i>
+					<span th:text="#{text.home}"></span>
+			</a></li>
+			<!-- 				search bar -->
+			<li class="app-search"><input class="app-search__input"
+				type="search" placeholder="Search">
+				<button class="app-search__button">
+					<i class="fa fa-search"></i>
+				</button></li>
+			<!--Notification Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#"
+				data-toggle="dropdown" aria-label="Show notifications"><i
+					class="fa fa-bell"></i></a>
+				<ul class="app-notification dropdown-menu dropdown-menu-right">
+					<li class="app-notification__title">You have 4 new
+						notifications.</li>
+					<div class="app-notification__content">
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-primary"></i><i
+										class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Lisa sent you a mail</p>
+									<p class="app-notification__meta">2 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-danger"></i><i
+										class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Mail server not
+										working</p>
+									<p class="app-notification__meta">5 min ago</p>
+								</div></a></li>
+						<li><a class="app-notification__item" href="javascript:;"><span
+								class="app-notification__icon"><span
+									class="fa-stack fa-lg"><i
+										class="fa fa-circle fa-stack-2x text-success"></i><i
+										class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+								<div>
+									<p class="app-notification__message">Transaction complete</p>
+									<p class="app-notification__meta">2 days ago</p>
+								</div></a></li>
+						<div class="app-notification__content">
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-primary"></i><i
+											class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Lisa sent you a mail</p>
+										<p class="app-notification__meta">2 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-danger"></i><i
+											class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Mail server not
+											working</p>
+										<p class="app-notification__meta">5 min ago</p>
+									</div></a></li>
+							<li><a class="app-notification__item" href="javascript:;"><span
+									class="app-notification__icon"><span
+										class="fa-stack fa-lg"><i
+											class="fa fa-circle fa-stack-2x text-success"></i><i
+											class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+									<div>
+										<p class="app-notification__message">Transaction complete</p>
+										<p class="app-notification__meta">2 days ago</p>
+									</div></a></li>
+						</div>
+					</div>
+					<li class="app-notification__footer"><a href="#">See all
+							notifications.</a></li>
+				</ul></li>
+			<!-- User Menu-->
+			<li class="dropdown"><a class="app-nav__item" href="#"
+				data-toggle="dropdown" aria-label="Open Profile Menu"><i
+					class="fa fa-chevron-circle-down"></i></a>
+				<ul class="dropdown-menu settings-menu dropdown-menu-right">
+					<li><a class="dropdown-item" th:href="@{#}"
+						data-toggle="modal" data-target="#settingsModal"
+						data-whatever="@getbootstrap"><i class="fa fa-cog"></i> <span
+							th:text="#{text.settings}"></span></a></li>
+					<li><a class="dropdown-item" th:href="@{/updateaccount}"><i
+							class="fa fa-user"></i> <span th:text="#{text.profile}"></span></a></li>
+					<li><a class="dropdown-item"
+						th:href="@{/authentification?logout}"><i
+							class="fa fa-power-off"></i> <span th:text="#{text.logout}"></span></a></li>
+				</ul></li>
+		</ul>
+	</header>
+	<!-- Sidebar menu-->
+	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	<aside class="app-sidebar">
+		<div class="app-sidebar__user">
+			<a th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+				th:if="${user.photo} == null"> <img
+					style="border: 4px solid #fff;" th:src="@{/fonts/manProfile.jpg}"
+					class="app-sidebar__user-avatar" width="40px" height="40px"
+					id="img" /></i> <i th:if="${user.photo} != null"> <img
+					style="border: 2px solid #fff;" class="app-sidebar__user-avatar"
+					width="40px" height="40px"
+					th:src="@{'/profileImages/'+${user.idaccount}}" />
+			</i>
+			</a>
+			<p class="app-sidebar__user-designation" th:text="${user.status}"></p>
+		</div>
+		<ul class="app-menu" style="font-family: sans-serif;">
+			<li th:if="${user.status} == ORPHANAGE" class="treeview"><a
+				class="app-menu__item" th:href="@{/addArticle}"> <i
+					class="app-menu__icon fa fa-edit"></i><span
+					th:text="#{text.postArticle}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/askforhelp}"> <i
+					class="app-menu__icon fa fa-hand-paper-o"></i> <span
+					th:text="#{text.askForHelp}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" hidden="" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" href="m	essage"> <i
+					class="app-menu__icon fa fa-money"></i> <span
+					th:text="#{text.payment}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/sponsor.html}"> <i
+					class="app-menu__icon fa fa-search"></i> <span
+					th:text="#{text.sponsor}" class="app-menu__label"></span></a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{#}" data-toggle="modal"
+				data-target="#exampleModal" data-whatever="@getbootstrap"> <i
+					class="app-menu__icon fa fa-gears"></i> <span
+					th:text="#{text.launchActivity}" class="app-menu__label"></span></a></li>
+			<li class="treeview is-expanded" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/adoptions}"> <i
+					class="app-menu__icon fa fa-odnoklassniki"></i> <span
+					th:text="#{text.suggestedAdoption}" class="app-menu__label"></span></a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/planning.html}"> <i
+					class="app-menu__icon fa fa-calendar"></i><span
+					th:text="#{text.createPlanning}" class="app-menu__label"></span>
+			</a></li>
+			<li th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/childrenlist.html}"> <i
+					class="app-menu__icon fa fa-user-plus"></i> <span
+					th:text="#{text.addChildren}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == ORPHANAGE"><a
+				class="app-menu__item" th:href="@{/necessity}"> <i
+					class="app-menu__icon fa fa-cart-plus"></i><span
+					th:text="#{text.mainNecessty}" class="app-menu__label"></span>
+			</a></li>
+			<li class="treeview" th:if="${user.status} == SPONSOR"><a
+				class="app-menu__item" th:href="@{/orphanageList}"> <i
+					class="app-menu__icon fa fa-home fa-1x"></i><span
+					th:text="#{text.locateOrphanage}" class="app-menu__label"></span></a></li>
+			<li th:if="${user.status} == SPONSOR"><a class="app-menu__item"
+				th:href="@{askedhelp}"> <i class="app-menu__icon fa fa-gift"></i>
+					<span th:text="#{text.askedHelp}" class="app-menu__label"></span> 
+					
+					<span
+					class="badge badge-danger" th:if="${askedHelp} != null"
+					th:text="${askhelp}"
+					>f</span>
+
+
+
+
+
+
+			</a></li>
+			<li class="treeview"><a class="app-menu__item"
+				th:href="@{/suggestion}"><i
+					class="app-menu__icon fa fa-question"></i><span
+					th:text="#{text.suggestion}" class="app-menu__label"></span></a></li>
+		</ul>
+	</aside>
+
+	<main class="app-content">
+	<div class="row mr-3 serif">
+		<div th:if="${user.status} == SPONSOR" class="col-md-6">
+			<div class="tile-article-allpha">
+				<form th:action="@{/addStatus}" method="post"
+					enctype="multipart/form-data">
+					<table class="table table-striped table-sm" style="width: 100%">
+						<tr>
+							<td colspan="2"><b class="ml-2"><i class="fa fa-pencil "></i>
+									<span th:text="#{text.statusTitlePanel}"></span></b></td>
+						</tr>
+						<tr>
+							<td width="5px"><i th:if="${user.photo} == null"> <img
+									style="border: 2px solid #28a745;"
+									th:src="@{/fonts/manProfile.jpg}"
+									class="app-sidebar__user-avatar" width="35px" height="35px" /></i>
+								<i th:if="${user.photo} != null"> <img
+									style="border: 2px solid #28a745;"
+									class="app-sidebar__user-avatar" width="35px" height="35px"
+									th:src="@{'/profileImages/'+${user.idaccount}}"></i></td>
+							<td><input name="content" class="text-muted form-control"
+								autocomplete="off" style="border: none;"
+								placeholder="Add a caption" required="required"> <input
+								name="userid" th:value="${user.idaccount}" type="number"
+								hidden=""></td>
+						</tr>
+						<tr>
+							<td colspan="2"><input type="file" id="real-file1" hidden=""
+								name="file" />
+
+								<button type="button" id="custom-button1"
+									style="border: none; border-radius: 2px;"
+									class="btn btn-cyan btn-sm mr-1 ml-2">
+									<i class="fa fa-image text-warning"></i> <span
+										th:text="#{text.joinStatusImage}"></span>
+								</button> <span id="custom-text1"></span>
+
+								<button type="submit" style="border: none; border-radius: 2px;"
+									class="btn btn-cyan btn-sm mr-1 ml-2">
+									<i class="fa fa-share"></i> <span
+										th:text="#{text.publishStatus}"></span>
+								</button></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+
+		<div class="col-md-6" th:if="${user.status} == ORPHANAGE">
+			<div class="tile-article-allpha">
+				<b style="margin: 15px; font-size: 15px;" class="text-dark"> <img
+					class="ml-2 mb-2 mr-2" width="40px" height="40px"
+					th:src="@{/fonts/house.png}" alt="user image"> <span
+					th:text="#{text.welcome}"></span><b th:if="${user.psex} == male">
+						<span th:text="#{text.mr}"></span> <b class="text-uppercase"
+						th:text="${user.pfirstname}"></b>
+				</b>
+				</b> <b th:if="${user.psex} == female"> <span th:text="#{text.ms}"></span>
+					<b class="text-uppercase" th:text="${user.pfirstname}"></b>
+				</b>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mr-3" th:each="article: ${articles}"
+		style="font-family: sans-serif;">
+		<div class="col-md-6">
+			<div class="tile-article-allpha">
+				<div class="bg-white">
+					<a class="ml-1 text-capitalize"
+						th:href="@{/selfpage/{page}(page=${article.ownerarticle.idaccount})}">
+						<i th:if="${article.ownerarticle.photo} == null"> <img
+							style="border: 2px solid #28a745;"
+							th:src="@{/fonts/manProfile.jpg}"
+							class="app-sidebar__user-avatar" width="40px" height="40px" /></i> <i
+						th:if="${article.ownerarticle.photo} != null"> <img
+							style="border: 2px solid #28a745;"
+							th:src="@{'/profileImages/'+${article.ownerarticle.idaccount}}"
+							class="app-sidebar__user-avatar ml-2" width="40px" height="40px"></i>
+						<b th:if="${article.ownerarticle.cname} != null"
+						style="font-size: 13px;" class="text-primary"
+						th:text="${article.ownerarticle.cname}"></b> <b
+						th:if="${article.ownerarticle.cname} == null"
+						style="font-size: 13px;" class="text-primary"
+						th:text="${article.ownerarticle.plastname}+' '+${article.ownerarticle.pfirstname}"></b>
+					</a>
+					<div class="content bg-light mb-1">
+						<i
+							th:if="${article.ownerarticle.photo} == null and ${article.ownerarticle.status} == ORPHANAGE"
+							class="text-danger ml-1"
+							style="font-size: 12px; font-family: arial;"><i
+							class="fa fa-fw fa-lg fa-exclamation-triangle"></i> <span
+							th:text="#{text.alertIdenticationfail}"></span></i>
+					</div>
+					<div class="content bg-light">
+						<b class="mb-0 ml-3 "> <a
+							th:if="${article.ownerarticle.status} == ORPHANAGE"
+							style="font-size: 12px; font-family: arial; text-decoration: none;"
+							class="text-dark"> <span th:text="#{text.articleDate}"></span>
+								<b th:text="${article.date}"></b>
+						</a> <a th:if="${article.ownerarticle.status} == SPONSOR"
+							style="font-size: 12px; font-family: arial; text-decoration: none;"
+							class="text-dark"> <span th:text="#{text.statusDate}"></span>
+								<b th:text="${article.date}"></b>
+						</a>
+						</b>
+					</div>
+				</div>
+
+				<div th:switch="${article.color}">
+					<p th:case="'red'" style="font-size: 15px; font-weight: bold;"
+						class="tile-tile col-md-12 text-center text-light bg-danger"
+						th:text="${article.title}"></p>
+					<p th:case="'green'" style="font-size: 15px; font-weight: bold;"
+						class="tile-tile col-md-12 text-center text-light bg-primary"
+						th:text="${article.title}"></p>
+					<p th:case="'yellow'" style="font-size: 15px; font-weight: bold;"
+						class="tile-tile col-md-12 text-center text-light bg-warning"
+						th:text="${article.title}"></p>
+					<p th:case="'blue'" style="font-size: 15px; font-weight: bold;"
+						class="tile-tile col-md-12 text-center text-light bg-info"
+						th:text="${article.title}"></p>
+					<p th:case="'gray'" style="font-size: 15px; font-weight: bold;"
+						class="tile-tile col-md-12 text-center text-light bg-secondary"
+						th:text="${article.title}"></p>
+				</div>
+
+				<p th:if="${article.ownerarticle.status} == SPONSOR"
+					style="font-size: 13px; padding-left: 3px; padding-right: 5px;"
+					class="tile-tile col-md-12 text-dark ml-2 mr-4"
+					th:text="${article.content}"></p>
+
+				<div class="toggle"
+					th:if="${article.ownerarticle.status} == ORPHANAGE">
+					<div class="text-justify more" id="article-text">
+						<p style="font-size: 13px; padding-left: 3px; padding-right: 5px;"
+							class="tile-tile col-md-12 text-dark ml-2 mr-4 border border-info"
+							th:text="${article.content}"></p>
+					</div>
+					<div class="less btn btn">
+						<a class="button-read-more button-read btn btn-primary btn-sm"
+							href="#read"> <span th:text="#{text.readArticle}"></span> <i
+							class="fa fa-chevron-down"></i>
+						</a> <a
+							class="button-read-less button-read border-primary btn btn-light btn-sm"
+							href="#read"><span th:text="#{text.keepArticle}"></span> <i
+							class="fa fa-chevron-up"></i> </a>
+					</div>
+				</div>
+				<img th:src="@{'/articlesImages/'+${article.idarticle}}"
+					width="100%" th:if="${article.idarticle} != null">
+				<p class="mb-0 mt-1" style="border-radius: 10px; font-size: 8px;">
+
+					<a th:if="${article.liked(user) == false}" data-toggle="tooltip"
+						data-placement="top" title="click here to like"
+						th:href="@{/incrementarticlelove/{id}(id=${article.idarticle})}"
+						style="text-decoration: none;" class="text-danger mr-1 mb-1 ml-4">
+						<i class="fa fa-heart-o fa-2x"></i> <b class="ml-2"
+						style="font-size: 12px;" th:text="${article.countLike()}"></b>
+					</a> <a th:if="${article.liked(user)}" style="text-decoration: none;"
+						class="text-danger mr-1 mb-1 ml-4"> <i
+						class="fa fa-heart fa-2x"></i> <b class="ml-2"
+						style="font-size: 12px;" th:text="${article.countLike()}"></b>
+					</a>
+					<!-- 					th:if="${user.idaccount} != ${article.ownerarticle.idaccount}"   -->
+					<a th:if="${article.ownerarticle.status} == ORPHANAGE"
+						style="text-decoration: none;" class="text-info mr-1 mb-1 ml-4"
+						data-toggle="tooltip" data-placement="top" title="Send Some Gift">
+						<i class="fa fa-gift fa-2x"></i>
+					</a> <a style="text-decoration: none;" class="ml-4 text-secondary">
+						<i class="fa fa-2x fa-comment-o"></i> <b class="ml-2"
+						style="font-size: 12px;" th:text="${article.comments.size()}"></b>
+					</a>
+				</p>
+				<form class="form-control" method="post"
+					th:action="@{/commentarticle}">
+					<table style="width: 100%;">
+						<tr th:each="comment: ${article.comments}">
+							<td width="5px"><i
+								th:if="${comment.userowner.photo} == null"> <img
+									style="border: 2px solid #28a745;"
+									th:src="@{/fonts/manProfile.jpg}"
+									class="app-sidebar__user-avatar" width="35px" height="35px" /></i>
+								<i th:if="${comment.userowner.photo} != null"> <img
+									style="border: 2px solid #28a745;"
+									class="app-sidebar__user-avatar" width="35px" height="35px"
+									th:src="@{'/profileImages/'+${comment.userowner.idaccount}}"
+									alt="User Image"></i></td>
+							<td colspan="2">
+								<p
+									style="font-size: 12px; font-weight: bold; border-radius: 60px; padding-top: 2px; padding-bottom: 2px;"
+									class="alert alert-secondary mr-2 mt-2 mb-2 ml-2">
+									<a class="text-capitalize"
+										th:if="${comment.userowner.cname} != null"
+										th:href="@{/selfpage/{page}(page=${comment.userowner.idaccount})}"
+										th:text="${comment.userowner.cname}+':'"></a> <a
+										class="text-capitalize"
+										th:if="${comment.userowner.cname} == null"
+										th:href="@{/selfpage/{page}(page=${comment.userowner.idaccount})}"
+										th:text="${comment.userowner.plastname}+':'"></a> &nbsp; <b
+										th:text="${comment.text}"></b>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3"><input name="articleid"
+								th:value="${article.idarticle}" type="number" hidden="">
+								<input name="owner" th:value="${user.idaccount}" type="number"
+								hidden=""></td>
+						</tr>
+						<tr>
+							<td width="5px"><i th:if="${user.photo} == null"> <img
+									style="border: 2px solid #28a745;"
+									th:src="@{/fonts/manProfile.jpg}"
+									class="app-sidebar__user-avatar" width="35px" height="35px" /></i>
+								<i th:if="${user.photo} != null"> <img
+									style="border: 2px solid #28a745;"
+									class="app-sidebar__user-avatar" width="35px" height="35px"
+									th:src="@{'/profileImages/'+${user.idaccount}}"></i></td>
+							<td><input name="comment" class="form-control"
+								style="border-radius: 10px;"
+								placeholder="Write your comment... " required="required"
+								autocomplete="off"> <input type="submit" hidden=""></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+	</main>
+
+	<aside class="app-sidebar-right-allpha"
+		style="margin-top: 4%; font-family: sans-serif;">
+		<div class="col-lg-12 mb-2">
+			<div class="bs-component">
+				<div class="card">
+					<b class="card-header text-uppercase text-center"
+						style="font-size: 13px; font-family: sans-serif;"><i
+						class="app-menu__icon fa fa-trophy fa-2x text-warning"></i>ça
+						bouge chez eux <i
+						class="app-menu__icon fa fa-pagelines fa-2x text-success"></i> </b>
+					<div id="carouselExampleIndicators" class="carousel slide"
+						data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#carouselExampleIndicators" data-slide-to="0"
+								class="active"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						</ol>
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<img class="d-block w-100" src="/fonts/Screen.bmp"
+									alt="First slide">
+							</div>
+							<div class="carousel-item">
+								<img class="d-block w-100" src="/fonts/modemMTN.jpg"
+									alt="Second slide">
+							</div>
+							<div class="carousel-item">
+								<img class="d-block w-100" src="/fonts/computer.jpg"
+									alt="Third slide">
+							</div>
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleIndicators"
+							role="button" data-slide="prev"> <span
+							class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+							class="sr-only">Previous</span>
+						</a> <a class="carousel-control-next"
+							href="#carouselExampleIndicators" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 tile">
+				<table>
+					<tr>
+						<td><div class="rounded border border-info">
+								<a th:href="@{/selfpage/{page}(page=${user.idaccount})}"> <i
+									th:if="${user.photo} == null"> <img
+										th:src="@{/fonts/manProfile.jpg}" alt="..." class="rounded">
+								</i> <i th:if="${user.photo} != null"> <img width="50px"
+										height="50px" th:src="@{'/profileImages/'+${user.idaccount}}"
+										alt="..." class="rounded">
+								</i>
+								</a>
+							</div></td>
+						<td><i class="text-black"> MTN CAMEROON</i> <br>
+							<div style="font-size: 12px; font-family: sans-serif;"
+								class="text-capitalize">
+								<i class="fa fa-map-marker text-muted"></i> <i
+									class="text-muted"
+									th:text="${user.ccity}+'/ '+${user.ccountry}"></i><br> <b
+									class="text-success" th:if="${user.photo} != null"> <i
+									class="fa fa-check"></i> Trusted Product
+								</b> <b class="text-danger" th:if="${user.photo} == null"> <i
+									class="fa fa-exclamation-triangle"></i> Untrusted Product
+								</b>
+							</div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<a th:href="@{/activities}"
+			class="col-md-12 btn btn-light btn-block btn-sm tile-allpha text-center">
+			<i class="fa fa-star text-success"></i> <span
+			th:text="#{text.buttonActivities}"></span> <i
+			class="fa fa-chevron-down text-black"></i>
+		</a>
+		<div class="col-md-12">
+			<div class="row" th:each="activity: ${activities}">
+				<div class="col-md-12">
+					<div class="bs-component">
+						<div class="card">
+							<b class="card-header"
+								style="font-size: 13px; font-family: sans-serif;"
+								th:text="${activity.title}"></b> <img class="card-img"
+								th:src="@{'/activityImages/'+${activity.idactivity}}"
+								alt="Card image">
+						</div>
+					</div>
+					<div class="content bg-white text-muted">
+						<i class="fa fa-eye ml-4 mr-4"
+							th:text="${' '+activity.countView()}"></i> <i class="fa fa-heart"
+							th:text="${' '+activity.countLike()}"></i>
+					</div>
+					<div class="col-md-12 tile">
+						<table>
+							<tr>
+								<td><div
+										style="border: 2px solid #28a745; text-align: center; border-radius: 30px;">
+										<a
+											th:href="@{/selfpage/{page}(page=${activity.owneractivity.idaccount})}">
+											<i th:if="${activity.owneractivity.photo} == null"> <img
+												style="border: 4px solid #fff; border-radius: 30px;"
+												width="60px" height="60px" th:src="@{/fonts/manProfile.jpg}" /></i>
+											<i th:if="${activity.owneractivity.photo} != null"> <img
+												style="border: 4px solid #fff; border-radius: 30px;"
+												width="60px" height="60px"
+												th:src="@{'/profileImages/'+${activity.owneractivity.idaccount}}" />
+										</i>
+										</a>
+									</div></td>
+								<td><i class="text-black"
+									th:text="${activity.owneractivity.cname}"></i> <b
+									class="text-black"
+									th:if="${activity.owneractivity.cname} == null"> <b
+										class="text-dark"
+										th:text="${activity.owneractivity.pfirstname}"></b>
+								</b> <br>
+									<div style="font-size: 12px; font-family: sans-serif;"
+										class="text-capitalize">
+										<i class="fa fa-map-marker text-muted"></i> <i
+											class="text-muted"
+											th:text="${activity.owneractivity.ccity}+' / '+${activity.owneractivity.ccountry}"></i><br>
+										<b class="text-success"
+											th:if="${activity.owneractivity.photo} != null"> <i
+											class="fa fa-check"></i> <span
+											th:text="#{text.alertIdenticationsuccess}"></span>
+										</b> <b class="text-danger"
+											th:if="${activity.owneractivity.photo} == null"> <i
+											class="fa fa-exclamation-triangle"></i> <span
+											th:text="#{text.alertIdenticationfail}"></span>
+										</b>
+									</div></td>
+							</tr>
+						</table>
+						<b class="bs-component"> <a
+							th:text="#{text.buttonViewActivity}"
+							th:href="@{/activity/{page}(page=${activity.idactivity})}"
+							style="border-color: gray;" class="btn btn-cyan btn-block btn-sm"
+							type="button"></a>
+						</b>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="chat"
+			th:if="${#httpServletRequest.getParameter('block')} != ${user.idaccount}">
+			<div class="chat-header text-capitalize">
+				<span id="name"><i class="fa fa-circle text-success mr-2"></i>
+					<b class="text-dark text-capitalize" th:if="${center} != null"
+					th:text="${center.cname}"></b> <b th:if="${center} != null"> <b
+						th:if="${center.cname} == null" th:text="${center.pfirstname}">
+					</b></b> </span> <img th:src="@{/fonts/croix.png}" class="chat-header-closer"
+					alt="FERMER" />
+			</div>
+			<div class="chat-content">
+				<div class="chat-content-msg">
+					<div class="messanger">
+						<div class="messages" th:if="${center} != null"
+							th:each="mail: ${mails}">
+							<div class="message"
+								th:if="${mail.sendermails.idaccount == center.idaccount}">
+								<table class="info ml-2">
+									<tr>
+										<td><p class="ml-1 mr-1 mt-1 mb-1"
+												th:text="${mail.content}"></p></td>
+									</tr>
+								</table>
+							</div>
+							<div class="message me"
+								th:if="${mail.sendermails.idaccount == user.idaccount}">
+								<table class="info mr-2">
+									<tr>
+										<td><p class="ml-1 mr-1 mt-1 mb-1"
+												th:text="${mail.content}"></p></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat-footer">
+					<form method="post" th:action="@{/sentmail}">
+						<input class="alert alert-white"
+							style="font-family: sans-serif; width: 100%; font-size: 13px; font-weight: bold;"
+							name="content" placeholder="write your message"
+							required="required" autocomplete="off"> <input
+							type="number" name="idreceiver"
+							th:value="${#httpServletRequest.getParameter('block')}" hidden="">
+						<input type="submit" value="send" hidden="">
+					</form>
+				</div>
+			</div>
+		</div>
+	</aside>
+
+	<section class="section-right-allpha border border-dark">
+		<div
+			class="tile bg-secondary text-light border border-top-0 border-white"
+			style="font-size: 15px; text-align: center;">
+			<i class="icon fa fa-users fa-lg"></i> &nbsp; <span
+				th:text="#{text.community}"></span>
+		</div>
+		<table>
+			<tr th:each="act: ${accounts}">
+				<td><a th:href="@{/selfpage/{page}(page=${act.idaccount})}"
+					class="ml-1"><i th:if="${act.photo} == null"> <img
+							th:src="@{/fonts/manProfile.jpg}"
+							class="app-sidebar__user-avatar"
+							style="border: 3px solid #28a745;" width="35px" height="35px" /></i>
+						<i th:if="${act.photo} != null"> <img
+							class="app-sidebar__user-avatar"
+							style="border: 2px solid #28a745;" width="35px" height="35px"
+							th:src="@{'/profileImages/'+${act.idaccount}}"></i></a></td>
+				<td id="reduce-text"><a data-toggle="tooltip"
+					data-placement="top" title="Start Chat"
+					style="padding-top: 2px; font-size: 12px; text-decoration: none;"
+					href="javascript:void(0);" class="text-muted text-capitalize"
+					th:href="@{chatwith/{idreceiver}(idreceiver=${act.idaccount})}">
+						<b th:text="${(act.cname)}"></b> <b th:if="${act.cname} == null">
+							<b th:text="${act.plastname}+' '+${act.pfirstname}"></b>
+					</b> <input hidden="" id="block" type="text"
+						th:value="${#httpServletRequest.getParameter('block')}">
+				</a></td>
+			</tr>
+		</table>
+	</section>
+
+	<!-- Essential javascripts for application to work-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+	<!-- 	chat javascript -->
+	<script type="text/javascript"
+		th:src="@{/jsallpha/chatallpha-1.0.1.js}"></script>
+	<script type="text/javascript" th:src="@{/jsallpha/jquery-1.10.2.js}"></script>
+	<!-- Page specific javascripts-->
+	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+	<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
+	<script type="text/javascript" src="js/plugins/chart.js"></script>
+	<script type="text/javascript">
+		var data = {
+			labels : [ "January", "February", "March", "April", "May" ],
+			datasets : [ {
+				label : "My First dataset",
+				fillColor : "rgba(220,220,220,0.2)",
+				strokeColor : "rgba(220,220,220,1)",
+				pointColor : "rgba(220,220,220,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(220,220,220,1)",
+				data : [ 65, 59, 80, 81, 56 ]
+			}, {
+				label : "My Second dataset",
+				fillColor : "rgba(151,187,205,0.2)",
+				strokeColor : "rgba(151,187,205,1)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",
+				data : [ 28, 48, 40, 19, 86 ]
+			} ]
+		};
+		var pdata = [ {
+			value : 300,
+			color : "#46BFBD",
+			highlight : "#5AD3D1",
+			label : "Complete"
+		}, {
+			value : 50,
+			color : "#F7464A",
+			highlight : "#FF5A5E",
+			label : "In-Progress"
+		} ]
+
+		var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+		var lineChart = new Chart(ctxl).Line(data);
+
+		var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+		var pieChart = new Chart(ctxp).Pie(pdata);
+	</script>
+	<!-- 	button more javascript -->
+	<script>
+		jQuery(document).ready(function() {
+			$(".more").hide();
+			jQuery('.button-read-more').click(function() {
+				$(this).closest('.less').addClass('active');
+				$(this).closest(".less").prev().stop(true).slideDown("1000");
+			});
+			jQuery('.button-read-less').click(function() {
+				$(this).closest('.less').removeClass('active');
+				$(this).closest(".less").prev().stop(true).slideUp("1000");
+			});
+		});
+	</script>
+
+	<!-- Google analytics script-->
+	<script type="text/javascript">
+		if (document.location.hostname == 'pratikborsadiya.in') {
+			(function(i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function() {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script',
+					'//www.google-analytics.com/analytics.js', 'ga');
+			ga('create', 'UA-72504830-1', 'auto');
+			ga('send', 'pageview');
+		}
+	</script>
+	<!-- 	script of button upload status -->
+	<script>
+		const realFileBtn = document.getElementById("real-file1");
+		const customBtn = document.getElementById("custom-button1");
+		const customTxt = document.getElementById("custom-text1");
+
+		customBtn.addEventListener("click", function() {
+			realFileBtn.click();
+
+		});
+
+		realFileBtn
+				.addEventListener(
+						"change",
+						function() {
+							if (realFileBtn.value) {
+								customTxt.innerHTML = realFileBtn.innerHTML = "<b style='font-size: 12px;'><i style='font-size: 18px;' class='fa fa-check text-success'></i> <b>";
+							} else {
+								customTxt.innerHTML = "<b style='font-size: 12px;'>No File Choosen, yet...<i style='font-size: 18px;' class='fa fa-times-circle text-danger'></i> <b>";
+							}
+						});
+	</script>
+	<!-- script of button upload activity picture -->
+	<script>
+		const realFileBtn0 = document.getElementById("real-file0");
+		const customBtn0 = document.getElementById("custom-button0");
+		const customTxt0 = document.getElementById("custom-text0");
+
+		customBtn0.addEventListener("click", function() {
+			realFileBtn0.click();
+
+		});
+
+		realFileBtn0
+				.addEventListener(
+						"change",
+						function() {
+							if (realFileBtn0.value) {
+								customTxt0.innerHTML = realFileBtn0.innerHTML = "<b class='fa fa-chevron-right'><b>";
+							} else {
+								customTxt0.innerHTML = "<b style='font-size: 12px;'>No File Choosen, yet...<i style='font-size: 18px;' class='fa fa-times-circle text-danger'></i> <b>";
+							}
+						});
+	</script>
+	<!-- 	 script for preview image -->
+	<script type='text/javascript'>
+		function preview_image(event) {
+			var reader = new FileReader();
+			reader.onload = function() {
+				var output = document.getElementById('output_image');
+				output.src = reader.result;
+			}
+			reader.readAsDataURL(event.target.files[0]);
+		}
+	</script>
+</body>
+</html>

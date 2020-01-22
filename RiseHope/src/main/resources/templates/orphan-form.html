@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Orphanage Form</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/fonts/Rh-icon.gif">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/font-awesome.min.css}">
+</head>
+<body
+	style="background-image: url('/fonts/IMAG0231.jpg'); width: 100%; height: 100%;">
+	<section class="lockscreen-content">
+		<div class="lock-box">
+			<h4 class="text-center user-name mb-4 ml-4 mr-4">
+				<i style="font-size: 20px;" class="fa fa-home text-black"></i> <span
+					th:text="#{text.formTitle}"></span>
+			</h4>
+			<form method="post" action="addAccount" th:object="${orphanaccount}">
+				<div class="form-group">
+					<div class="form-check bg bg-primary text-light text-center">
+						<b style="font-size: 15px; font-family: arial; font-weight: bold;"
+							th:text="#{text.centerInformation}"> </b>
+					</div>
+				</div>
+				<div class="form-group">
+					<label th:text="#{text.centerName}"></label> <input
+						class="form-control" type="text" th:field="*{cname}"
+						placeholder="Center Name">
+				</div>
+				<div class="form-group">
+					<label th:text="#{text.city}"></label> <input class="form-control"
+						type="text" placeholder="City" th:field="*{ccity}">
+				</div>
+				<div class="form-group">
+					<label th:text="#{text.country}"></label> <input
+						class="form-control" type="text" placeholder="Country"
+						th:field="*{ccountry}">
+				</div>
+				<div class="form-group">
+					<label th:text="#{text.phoneauthentification}"></label> <input
+						class="form-control" type="text" th:field="*{cphone}"
+						placeholder="Phone Number">
+				</div>
+				<div class="form-group">
+					<label th:text="#{text.password}"></label> <input
+						class="form-control" type="password" id="password"
+						placeholder="Password" th:field="*{cpassword}">
+				</div>
+				<div class="form-group">
+					<label th:text="#{text.confirmPassword}"></label> <input
+						class="form-control" id="passwordconfirm" type="password"
+						placeholder="Confirm Password">
+				</div>
+				<div class="form-group">
+					<select class="form-control" th:field="*{status}" hidden="">
+						<option th:value="ORPHANAGE"></option>
+					</select>
+				</div>
+				<div class="tile-footer">
+					<button class="btn btn-primary" type="submit">
+						<i class="fa fa-fw fa-lg fa-check-circle"></i> <span
+							th:text="#{text.register}"></span>
+					</button>
+					&nbsp;&nbsp;&nbsp;
+					<button class="btn btn-secondary" type="reset"
+						th:text="#{text.cancel}"></button>
+				</div>
+			</form>
+			<br />
+			<h6>
+				<a th:href="@{/authentification}" th:text="#{text.backToLogPage}">
+				</a>
+			</h6>
+		</div>
+	</section>
+	<!-- Essential javascripts for application to work-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+</body>
+</html>
+
